@@ -1,10 +1,21 @@
+/*
+Copyright 2019 Javier Brea
+Copyright 2019 XbyOrange
+
+Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+*/
+
 import React, { Component } from "react";
 import Enzyme, { shallow, mount } from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
 import PropTypes from "prop-types";
 import AxiosMock from "./Axios.mock.js";
-import { Selector } from "@xbyorange/mercury";
-import { Api } from "@xbyorange/mercury-api";
+import { Selector } from "@data-provider/core";
+import { Api } from "@data-provider/axios";
 import sinon from "sinon";
 import {
   connect,
@@ -211,7 +222,7 @@ describe("react connect plugin", () => {
     wrapper.unmount();
   });
 
-  it("should trace a warning when reading server side data if there are duplicated mercury sources ids", async () => {
+  it("should trace a warning when reading server side data if there are duplicated Data Provider sources ids", async () => {
     expect.assertions(1);
     sandbox.spy(console, "warn");
     const fooBooksServerSideSelector = new Selector(booksServerSide, result => result, {
