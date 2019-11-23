@@ -1,4 +1,4 @@
-import { connect } from "@xbyorange/react-mercury";
+import { connect } from "@data-provider/connector-react";
 
 import { mediaQueryFiltered, deviceDataFiltered } from "../../../data/media-query";
 

@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 ### BREAKING CHANGES
 
+## [1.3.0] - 2019-11-23
+### Changed
+- Project migration. __Read NOTICE__ for further info. All previous releases in this CHANGELOG file correspond to @xbyorange/react-mercury package distribution.
+
 ## [1.2.1] - 2019-10-22
 ### Fixed
 - Do not throw an error on duplicated ids detected while reading server side data.

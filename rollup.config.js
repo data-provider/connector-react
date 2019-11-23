@@ -39,16 +39,16 @@ module.exports = [
   {
     ...BASE_CONFIG,
     output: {
-      file: "dist/react-mercury.umd.js",
+      file: "dist/data-provider-connector-react.umd.js",
       format: "umd",
-      name: "reactMercury",
+      name: "dataProviderConnectorReact",
       globals: GLOBALS
     }
   },
   {
     ...BASE_CONFIG,
     output: {
-      file: "dist/react-mercury.esm.js",
+      file: "dist/data-provider-connector-react.esm.js",
       format: "esm",
       globals: GLOBALS
     },

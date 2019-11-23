@@ -3,8 +3,8 @@ import Enzyme, { shallow, mount } from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
 import PropTypes from "prop-types";
 import AxiosMock from "./Axios.mock.js";
-import { Selector } from "@xbyorange/mercury";
-import { Api } from "@xbyorange/mercury-api";
+import { Selector } from "@data-provider/core";
+import { Api } from "@data-provider/axios";
 import sinon from "sinon";
 import {
   connect,
@@ -211,7 +211,7 @@ describe("react connect plugin", () => {
     wrapper.unmount();
   });
 
-  it("should trace a warning when reading server side data if there are duplicated mercury sources ids", async () => {
+  it("should trace a warning when reading server side data if there are duplicated Data Provider sources ids", async () => {
     expect.assertions(1);
     sandbox.spy(console, "warn");
     const fooBooksServerSideSelector = new Selector(booksServerSide, result => result, {

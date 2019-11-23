@@ -1,5 +1,5 @@
 import { sortBy } from "lodash";
-import { Selector } from "@xbyorange/mercury";
+import { Selector } from "@data-provider/core";
 import { booksCollection, titleContainingFilter } from "../origins/booksCollection";
 import { authorsBooksCollection } from "../../authors";
 

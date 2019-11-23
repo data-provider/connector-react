@@ -5,7 +5,7 @@ import { routes, sectionsAsArray } from "./Router";
 
 import { baseApi } from "./config";
 
-import { apis } from "@xbyorange/mercury-api";
+import { apis } from "@data-provider/axios";
 
 import "./app.css";
 

@@ -5,7 +5,7 @@
 /node_modules
 /.pnp
 .pnp.js
-/src/react-mercury
+/src/connector-react
 
 # testing
 /coverage

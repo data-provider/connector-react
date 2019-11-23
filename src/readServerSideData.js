@@ -14,7 +14,7 @@ const resultsToObject = results => {
     results.reduce((allResults, result) => {
       if (allResults.hasOwnProperty(result.id)) {
         console.warn(
-          `Duplicated mercury id ${result.id} detected in server-side-data. Data may not be assigned properly to correspondent sources in client-side`
+          `Duplicated Data Provider id ${result.id} detected in server-side-data. Data may not be assigned properly to correspondent sources in client-side`
         );
       }
       allResults[result.id] = result.value;

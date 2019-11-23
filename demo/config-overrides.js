@@ -14,7 +14,7 @@ module.exports = function override(config) {
     config.module.rules.splice(eslintRuleIndex, 1);
   }
 
-  // Add babel alias for react-mercury
+  // Add babel alias for data-provider/connector-react
   config.module.rules.unshift({
     test: /\.(js|jsx|mjs)$/,
     include: /src/,
@@ -26,7 +26,8 @@ module.exports = function override(config) {
           {
             root: ["."],
             alias: {
-              "@xbyorange/react-mercury": "./src/react-mercury/react-mercury.esm.js"
+              "@data-provider/connector-react":
+                "./src/connector-react/data-provider-connector-react.esm.js"
             }
           }
         ]

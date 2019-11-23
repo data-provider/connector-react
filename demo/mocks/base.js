@@ -1,4 +1,4 @@
-const { Feature } = require("@xbyorange/mocks-server");
+const { Feature } = require("@mocks-server/main");
 
 const { getBooks, getBook, addBook, updateBook, deleteBook } = require("./fixtures/api/books");
 const { getAuthors } = require("./fixtures/api/authors");

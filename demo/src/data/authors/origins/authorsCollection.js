@@ -1,4 +1,4 @@
-import { Api } from "@xbyorange/mercury-api";
+import { Api } from "@data-provider/axios";
 
 // AUTHORS COLLECTION
 

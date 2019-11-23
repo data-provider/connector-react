@@ -11,7 +11,7 @@ const getDisplayName = WrappedComponent => {
 
 export const connect = (mapSourcesToProps, parseProps) => {
   return WrappedComponent => {
-    class MercuryConnectedComponent extends React.Component {
+    class DataProviderConnectedComponent extends React.Component {
       constructor(props) {
         super(props);
         this._unmounted = false;
@@ -66,7 +66,7 @@ export const connect = (mapSourcesToProps, parseProps) => {
         return sourceProps[propName];
       }
 
-      isMercurySource(prop) {
+      isDataProviderSource(prop) {
         return prop && prop._isSourceMethod;
       }
 
@@ -80,7 +80,7 @@ export const connect = (mapSourcesToProps, parseProps) => {
             this.sourcePropsGetters[sourceKey] = this.sourceProps[sourceKey].prop;
             this.sourceProps[sourceKey] = this.sourceProps[sourceKey]._method;
           }
-          if (this.isMercurySource(this.sourceProps[sourceKey])) {
+          if (this.isDataProviderSource(this.sourceProps[sourceKey])) {
             this.sourcePropsIds[sourceKey] = this.sourceProps[sourceKey]._source._id;
           }
         });
@@ -104,7 +104,7 @@ export const connect = (mapSourcesToProps, parseProps) => {
               this.sourcePropsGetters[sourceKey]
             );
           } else {
-            sourcesProps[sourceKey] = this.isMercurySource(this.sourceProps[sourceKey])
+            sourcesProps[sourceKey] = this.isDataProviderSource(this.sourceProps[sourceKey])
               ? this.cleanSourceProps(
                   this.sourceProps[sourceKey],
                   this.sourcePropsGetters[sourceKey]
@@ -128,7 +128,7 @@ export const connect = (mapSourcesToProps, parseProps) => {
       }
 
       markSourceAsLoaded(sourceKey) {
-        // TODO, remove this when Mercury provides info about if source has been loaded.
+        // TODO, remove this when Data Provider provides info about if source has been loaded.
         this.sourcePropsLoaded[sourceKey] = true;
         this.updateState();
       }
@@ -165,7 +165,7 @@ export const connect = (mapSourcesToProps, parseProps) => {
 
       addSourceListeners() {
         this.sourcePropsKeys.forEach(sourceKey => {
-          if (this.isMercurySource(this.sourceProps[sourceKey])) {
+          if (this.isDataProviderSource(this.sourceProps[sourceKey])) {
             this.sourcePropsReaders[sourceKey] = () => {
               if (this.sourceProps[sourceKey]._methodName === READ_METHOD) {
                 // TODO, why here source is accessed through "_source.read" and in dispatchAllRead is done through the main object?
@@ -188,7 +188,7 @@ export const connect = (mapSourcesToProps, parseProps) => {
 
       removeSourceListeners() {
         this.sourcePropsKeys.forEach(sourceKey => {
-          if (this.isMercurySource(this.sourceProps[sourceKey])) {
+          if (this.isDataProviderSource(this.sourceProps[sourceKey])) {
             this.sourceProps[sourceKey]._source.removeCleanListener(
               this.sourcePropsReaders[sourceKey]
             );
@@ -212,14 +212,14 @@ export const connect = (mapSourcesToProps, parseProps) => {
       }
     }
 
-    MercuryConnectedComponent.contextType = ServerSideDataContext;
+    DataProviderConnectedComponent.contextType = ServerSideDataContext;
 
-    MercuryConnectedComponent.displayName = `MercuryConnectedComponent(${getDisplayName(
+    DataProviderConnectedComponent.displayName = `DataProviderConnectedComponent(${getDisplayName(
       WrappedComponent
     )})`;
 
-    hoistNonReactStatics(MercuryConnectedComponent, WrappedComponent);
+    hoistNonReactStatics(DataProviderConnectedComponent, WrappedComponent);
 
-    return MercuryConnectedComponent;
+    return DataProviderConnectedComponent;
   };
 };

@@ -1,4 +1,4 @@
-import { Selector } from "@xbyorange/mercury";
+import { Selector } from "@data-provider/core";
 import { booksCollection } from "../../books";
 import { authorsCollection, authorsBooksCollection } from "../../authors";
 

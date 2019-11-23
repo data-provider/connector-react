@@ -1,4 +1,4 @@
-import { Selector } from "@xbyorange/mercury";
+import { Selector } from "@data-provider/core";
 import { desktopCollection } from "../origins/desktopCollection";
 import { mobileCollection } from "../origins/mobileCollection";
 import { mediaQueryFiltered } from "../origins/mediaQuery";
