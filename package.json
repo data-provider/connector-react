@@ -1,6 +1,6 @@
 {
   "name": "@data-provider/connector-react",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "description": "React connector for Data Provider",
   "keywords": [
     "data-provider",
