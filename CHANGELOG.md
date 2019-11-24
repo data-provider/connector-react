@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 ### BREAKING CHANGES
 
+## [1.4.1] - 2019-11-24
+### Fixed
+- Fix Sonar code smell
+
 ## [1.4.0] - 2019-11-24
 ### Changed
 - Upgrade @data-provider/core dependency

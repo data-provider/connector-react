@@ -2,7 +2,7 @@ export const message = text => {
   return `@data-provider/connector-react: ${text}`;
 };
 
-export const error = text => {
+export const logError = text => {
   console.error(message(text));
 };
 

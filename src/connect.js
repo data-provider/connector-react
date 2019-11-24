@@ -13,7 +13,7 @@ import React from "react";
 import hoistNonReactStatics from "hoist-non-react-statics";
 import { isEqual } from "lodash";
 import { ServerSideDataContext } from "./ServerSideDataContext";
-import { error } from "./utils";
+import { logError } from "./utils";
 
 const READ_METHOD = "read";
 
@@ -133,7 +133,7 @@ export const connect = (mapProvidersToProps, parseProps) => {
       }
 
       logError(id, message) {
-        error(`Error "${message}" in instance "${id}"`);
+        logError(`Error "${message}" in instance "${id}"`);
       }
 
       markProviderAsLoaded(key) {
