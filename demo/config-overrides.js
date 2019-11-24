@@ -38,7 +38,7 @@ module.exports = function override(config) {
             root: ["."],
             alias: {
               "@data-provider/connector-react":
-                "./src/connector-react/data-provider-connector-react.esm.js"
+                "./src/connector-react/data-provider-connector-react.cjs.js"
             }
           }
         ]
