@@ -1,6 +1,6 @@
 {
   "name": "@data-provider/connector-react",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "description": "React connector for Data Provider",
   "keywords": [
     "data-provider",
@@ -22,7 +22,7 @@
   "files": [
     "dist"
   ],
-  "main": "dist/data-provider-connector-react.umd.js",
+  "main": "dist/data-provider-connector-react.cjs.js",
   "module": "dist/data-provider-connector-react.esm.js",
   "scripts": {
     "prelint": "rimraf demo/src/connector-react",
@@ -35,7 +35,7 @@
   },
   "peerDependencies": {
     "react": "^16.10.2",
-    "@data-provider/core": "^1.6.0"
+    "@data-provider/core": "^1.7.0"
   },
   "dependencies": {
     "hoist-non-react-statics": "3.3.0",
@@ -45,8 +45,8 @@
     "@babel/core": "^7.6.4",
     "@babel/preset-env": "^7.6.3",
     "@babel/preset-react": "^7.6.3",
-    "@data-provider/core": "^1.6.0",
-    "@data-provider/axios": "^1.4.0",
+    "@data-provider/core": "^1.7.0",
+    "@data-provider/axios": "^1.5.0",
     "axios": "0.18.0",
     "axios-retry": "^3.1.2",
     "babel-core": "^7.0.0-bridge.0",
@@ -74,8 +74,6 @@
     "rollup-plugin-babel": "^4.3.3",
     "rollup-plugin-commonjs": "^10.1.0",
     "rollup-plugin-json": "^4.0.0",
-    "rollup-plugin-node-builtins": "^2.1.2",
-    "rollup-plugin-node-globals": "^1.4.0",
     "rollup-plugin-node-resolve": "^5.2.0",
     "rollup-plugin-uglify": "^6.0.3",
     "sinon": "^7.5.0"

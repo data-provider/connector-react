@@ -13,6 +13,7 @@ import React from "react";
 import hoistNonReactStatics from "hoist-non-react-statics";
 import { isEqual } from "lodash";
 import { ServerSideDataContext } from "./ServerSideDataContext";
+import { error } from "./utils";
 
 const READ_METHOD = "read";
 
@@ -20,191 +21,183 @@ const getDisplayName = WrappedComponent => {
   return WrappedComponent.displayName || WrappedComponent.name;
 };
 
-export const connect = (mapSourcesToProps, parseProps) => {
+export const connect = (mapProvidersToProps, parseProps) => {
   return WrappedComponent => {
     class DataProviderConnectedComponent extends React.Component {
       constructor(props) {
         super(props);
         this._unmounted = false;
-        this.sourcePropsListeners = {};
-        this.sourcePropsReaders = {};
-        this.sourcePropsKeys = [];
-        this.sourcePropsGetters = {};
-        this.sourcePropsIds = {};
-        this.sourcePropsLoaded = {};
-        this.getSourcesProps();
+        this.providerPropsListeners = {};
+        this.providerPropsReaders = {};
+        this.providerPropsKeys = [];
+        this.providerPropsGetters = {};
+        this.providerPropsIds = {};
+        this.providerPropsLoaded = {};
+        this.getProvidersProps();
         this.state = {
-          sourceProps: this.getSourcesPropsValues()
+          providerProps: this.getProvidersPropsValues()
         };
       }
 
       componentDidMount() {
-        this.resetSources();
+        this.resetProviders();
       }
 
       componentDidUpdate(prevProps) {
         if (!isEqual(prevProps, this.props)) {
-          this.resetSources();
+          this.resetProviders();
         }
       }
 
       componentWillUnmount() {
         this._unmounted = true;
-        this.removeSourceListeners();
+        this.removeProviderListeners();
       }
 
-      resetSources() {
-        this.removeSourceListeners();
-        this.getSourcesProps();
+      resetProviders() {
+        this.removeProviderListeners();
+        this.getProvidersProps();
         this.updateState();
-        this.addSourceListeners();
+        this.addProviderListeners();
         this.dispatchAllReads();
       }
 
-      cleanSourceProps(sourceProps, propName) {
+      cleanProviderProps(providerProps, propName) {
         const dispatch = data =>
-          sourceProps.dispatch(data).catch(error => {
-            this.logError(sourceProps._source._id, error.message);
+          providerProps.dispatch(data).catch(error => {
+            this.logError(providerProps._instance._id, error.message);
           });
         if (!propName) {
           return {
             dispatch,
-            error: sourceProps.error,
-            loading: sourceProps.loading,
-            value: sourceProps.value
+            error: providerProps.error,
+            loading: providerProps.loading,
+            value: providerProps.value
           };
         }
-        return sourceProps[propName];
+        return providerProps[propName];
       }
 
-      isDataProviderSource(prop) {
-        return prop && prop._isSourceMethod;
+      isDataProvider(prop) {
+        return prop && prop._isDataProviderMethod;
       }
 
-      getSourcesProps() {
-        this.sourceProps = mapSourcesToProps(this.props);
-        this.sourcePropsKeys = Object.keys(this.sourceProps);
+      getProvidersProps() {
+        this.providerProps = mapProvidersToProps(this.props);
+        this.providerPropsKeys = Object.keys(this.providerProps);
 
         // Define getters
-        this.sourcePropsKeys.forEach(sourceKey => {
-          if (this.sourceProps[sourceKey] && this.sourceProps[sourceKey].isGetter) {
-            this.sourcePropsGetters[sourceKey] = this.sourceProps[sourceKey].prop;
-            this.sourceProps[sourceKey] = this.sourceProps[sourceKey]._method;
+        this.providerPropsKeys.forEach(key => {
+          if (this.providerProps[key] && this.providerProps[key].isGetter) {
+            this.providerPropsGetters[key] = this.providerProps[key].prop;
+            this.providerProps[key] = this.providerProps[key]._method;
           }
-          if (this.isDataProviderSource(this.sourceProps[sourceKey])) {
-            this.sourcePropsIds[sourceKey] = this.sourceProps[sourceKey]._source._id;
+          if (this.isDataProvider(this.providerProps[key])) {
+            this.providerPropsIds[key] = this.providerProps[key]._instance._id;
           }
         });
       }
 
-      getSourcesPropsValues() {
-        const sourcesProps = {};
-        this.sourcePropsKeys.forEach(sourceKey => {
+      getProvidersPropsValues() {
+        const providerProps = {};
+        this.providerPropsKeys.forEach(key => {
           if (
             this.context &&
             this.context.data &&
-            this.context.data[this.sourcePropsIds[sourceKey]] &&
-            !this.sourcePropsLoaded[sourceKey]
+            this.context.data[this.providerPropsIds[key]] &&
+            !this.providerPropsLoaded[key]
           ) {
-            sourcesProps[sourceKey] = this.cleanSourceProps(
+            providerProps[key] = this.cleanProviderProps(
               {
                 loading: false,
                 error: null,
-                value: this.context.data[this.sourcePropsIds[sourceKey]]
+                value: this.context.data[this.providerPropsIds[key]]
               },
-              this.sourcePropsGetters[sourceKey]
+              this.providerPropsGetters[key]
             );
           } else {
-            sourcesProps[sourceKey] = this.isDataProviderSource(this.sourceProps[sourceKey])
-              ? this.cleanSourceProps(
-                  this.sourceProps[sourceKey],
-                  this.sourcePropsGetters[sourceKey]
-                )
-              : this.sourceProps[sourceKey];
+            providerProps[key] = this.isDataProvider(this.providerProps[key])
+              ? this.cleanProviderProps(this.providerProps[key], this.providerPropsGetters[key])
+              : this.providerProps[key];
           }
         });
-        return sourcesProps;
+        return providerProps;
       }
 
       updateState() {
         if (!this._unmounted) {
           this.setState({
-            sourceProps: this.getSourcesPropsValues()
+            providerProps: this.getProvidersPropsValues()
           });
         }
       }
 
       logError(id, message) {
-        console.error(`Error "${message}" in ${id}`);
+        error(`Error "${message}" in instance "${id}"`);
       }
 
-      markSourceAsLoaded(sourceKey) {
-        // TODO, remove this when Data Provider provides info about if source has been loaded.
-        this.sourcePropsLoaded[sourceKey] = true;
+      markProviderAsLoaded(key) {
+        // TODO, remove this when Data Provider provides info about if instance has been loaded.
+        this.providerPropsLoaded[key] = true;
         this.updateState();
       }
 
-      dispatchRead(source, sourceKey) {
+      dispatchRead(instance, key) {
         if (
           this.context &&
           (this.context.clientSide ||
             !this.context.data ||
-            !this.context.data[this.sourcePropsIds[sourceKey]])
+            !this.context.data[this.providerPropsIds[key]])
         ) {
-          return source
+          return instance
             .dispatch()
             .catch(error => {
-              this.logError(this.sourceProps[sourceKey]._source._id, error.message);
-              this.markSourceAsLoaded(sourceKey);
+              this.logError(this.providerProps[key]._instance._id, error.message);
+              this.markProviderAsLoaded(key);
             })
             .then(() => {
-              this.markSourceAsLoaded(sourceKey);
+              this.markProviderAsLoaded(key);
             });
         }
       }
 
       dispatchAllReads() {
-        this.sourcePropsKeys.forEach(sourceKey => {
-          if (
-            this.sourceProps[sourceKey] &&
-            this.sourceProps[sourceKey]._methodName === READ_METHOD
-          ) {
-            this.dispatchRead(this.sourceProps[sourceKey], sourceKey);
+        this.providerPropsKeys.forEach(key => {
+          if (this.providerProps[key] && this.providerProps[key]._methodName === READ_METHOD) {
+            this.dispatchRead(this.providerProps[key], key);
           }
         });
       }
 
-      addSourceListeners() {
-        this.sourcePropsKeys.forEach(sourceKey => {
-          if (this.isDataProviderSource(this.sourceProps[sourceKey])) {
-            this.sourcePropsReaders[sourceKey] = () => {
-              if (this.sourceProps[sourceKey]._methodName === READ_METHOD) {
-                // TODO, why here source is accessed through "_source.read" and in dispatchAllRead is done through the main object?
-                this.dispatchRead(this.sourceProps[sourceKey]._source.read, sourceKey);
+      addProviderListeners() {
+        this.providerPropsKeys.forEach(key => {
+          if (this.isDataProvider(this.providerProps[key])) {
+            this.providerPropsReaders[key] = () => {
+              if (this.providerProps[key]._methodName === READ_METHOD) {
+                // TODO, why here instance is accessed through "_instance.read" and in dispatchAllRead is done through the main object?
+                this.dispatchRead(this.providerProps[key]._instance.read, key);
               }
             };
 
-            this.sourcePropsListeners[sourceKey] = methodName => {
-              if (methodName === this.sourceProps[sourceKey]._methodName) {
+            this.providerPropsListeners[key] = methodName => {
+              if (methodName === this.providerProps[key]._methodName) {
                 this.updateState();
               }
             };
 
-            this.sourceProps[sourceKey]._source.onClean(this.sourcePropsReaders[sourceKey]);
+            this.providerProps[key]._instance.onClean(this.providerPropsReaders[key]);
 
-            this.sourceProps[sourceKey]._source.onChange(this.sourcePropsListeners[sourceKey]);
+            this.providerProps[key]._instance.onChange(this.providerPropsListeners[key]);
           }
         });
       }
 
-      removeSourceListeners() {
-        this.sourcePropsKeys.forEach(sourceKey => {
-          if (this.isDataProviderSource(this.sourceProps[sourceKey])) {
-            this.sourceProps[sourceKey]._source.removeCleanListener(
-              this.sourcePropsReaders[sourceKey]
-            );
-            this.sourceProps[sourceKey]._source.removeChangeListener(
-              this.sourcePropsListeners[sourceKey]
+      removeProviderListeners() {
+        this.providerPropsKeys.forEach(key => {
+          if (this.isDataProvider(this.providerProps[key])) {
+            this.providerProps[key]._instance.removeCleanListener(this.providerPropsReaders[key]);
+            this.providerProps[key]._instance.removeChangeListener(
+              this.providerPropsListeners[key]
             );
           }
         });
@@ -213,7 +206,7 @@ export const connect = (mapSourcesToProps, parseProps) => {
       render() {
         let props = {
           ...this.props,
-          ...this.state.sourceProps
+          ...this.state.providerProps
         };
         if (parseProps) {
           props = parseProps(props);

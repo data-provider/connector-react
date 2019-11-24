@@ -6,9 +6,9 @@
 
 ## Overview
 
-This package provides reactivity to [Data Provider][data-provider-url] using a React high order component. It also dispatchs automatically the read method of the Data Provider sources.
+This package provides reactivity to [Data Provider][data-provider-url] using a React high order component. It also dispatchs automatically the read method of the Data Provider instances.
 
-Connect the desired sources with your components and this library will retrieve the data and re-render your components when corresponds.
+Connect the desired Data Providers with your components and this library will retrieve the data and re-render your components when corresponds.
 
 ## Install
 
@@ -20,7 +20,7 @@ npm i @data-provider/connector-react --save
 
 In the next example, the books will be retrieved automatically from server if they are not cached. The component will be rendered again if a new book is added to the collection by another component, or deleted, etc.
 
-Components can be connected to [Data Provider origins or selectors][data-provider-url]. The interface is the same in all cases.
+Components can be connected to [Data Providers or Selectors][data-provider-url]. The interface is the same in all cases.
 
 ### Use connect
 
@@ -28,7 +28,7 @@ Components can be connected to [Data Provider origins or selectors][data-provide
 import React, { Component } from "react";
 import { connect } from "@data-provider/connector-react";
 
-import { booksCollection } from "data/books"; //booksCollection is a Data Provider origin
+import { booksCollection } from "data/books"; //booksCollection is a Data Provider
 
 export class Books extends Component {
   render() {
@@ -58,42 +58,42 @@ export class Books extends Component {
   }
 }
 
-export const mapDataSourceToProps = () => ({
+export const mapDataProviderToProps = () => ({
   books: booksCollection.read
 });
 
-export const ConnectedBooks = connect(mapDataSourceToProps)(Books);
+export const ConnectedBooks = connect(mapDataProviderToProps)(Books);
 
 ```
 
-### Querying Data Provider sources using component "props"
+### Querying Data Providers using component "props"
 
 In the next example, the component will render only books of author "cervantes", and will request them to the server using the correspondant query (if not cached previously):
 
 ```js
-export const mapDataSourceToProps = props => ({
+export const mapDataProviderToProps = props => ({
   books: booksCollection.ofAuthor(props.author).read
 });
 
-export const ConnectedModule = connect(mapDataSourceToProps)(Books);
+export const ConnectedModule = connect(mapDataProviderToProps)(Books);
 ```
 
-### Connect component to many Data Provider sources
+### Connect component to many Data Providers
 
-The connect function accepts connecting as many sources as you want. Any change on any of the sources will produce a new render of the component:
+The connect function accepts connecting as many Data Providers as you want. Any change on any of the data providers will produce a new render of the component:
 
 ```js
-export const mapDataSourceToProps = () => ({
+export const mapDataProviderToProps = () => ({
   books: booksCollection.read,
   authors: authorsCollection.read
 });
 
-export const ConnectedModule = connect(mapDataSourceToProps)(Books);
+export const ConnectedModule = connect(mapDataProviderToProps)(Books);
 ```
 
-### Connect component to specific properties of a Data Provider source
+### Connect component to specific properties of a Data Provider
 
-You can use the property getters available in sources to pass an specific property to components instead of the full object. This will improve and simplify the usage of props inside the component, because each component prop will be equivalent to an specific source property:
+You can use the property getters available in data provider instances to pass an specific property to components instead of the full object. This will improve and simplify the usage of props inside the component, because each component prop will be equivalent to an specific property:
 
 ```jsx
 import { connect } from "@data-provider/connector-react";
@@ -118,22 +118,22 @@ export const BooksList = ({ books, booksLoading, booksError }) => {
   );
 };
 
-export const mapDataSourceToProps = () => ({
+export const mapDataProviderToProps = () => ({
   booksError: booksCollection.read.getters.error,
   books: booksCollection.read.getters.value,
   booksLoading: booksCollection.read.getters.loading
 });
 
-export const ConnectedModule = connect(mapDataSourceToProps)(BooksList);
+export const ConnectedModule = connect(mapDataProviderToProps)(BooksList);
 
 ```
 
 ### Pass any other type of properties using connect:
 
-The connect function can pass any other types of properties to the Component, not only Data Provider sources:
+The connect function can pass any other types of properties to the Component, not only Data Provider instances:
 
 ```js
-export const mapDataSourceToProps = props => ({
+export const mapDataProviderToProps = props => ({
   createBook: booksCollection.create,
   books: booksCollection.read,
   authors: authorsCollection.read,
@@ -145,18 +145,18 @@ export const mapDataSourceToProps = props => ({
   }
 });
 
-export const ConnectedModule = connect(mapDataSourceToProps)(Books);
+export const ConnectedModule = connect(mapDataProviderToProps)(Books);
 ```
 
 ### Using connect parser function to prepare data synchronously to component
 
-In some scenarios, the component is not prepared to handle asynchronous data, and could fail rendering if, for example, the source value is not already fullfilled because it is loading. A Selector could be used to ensure data in component properties, but, for more specific behaviors related with loading or error properties, a parser function is available in the connector. This function, if defined, will be executed passing all component properties before rendering it, and the returned object will be applied as properties to the Component.
+In some scenarios, the component is not prepared to handle asynchronous data, and could fail rendering if, for example, the data provider value is not already fullfilled because it is loading. A Selector could be used to ensure data in component properties, but, for more specific behaviors related with loading or error properties, a parser function is available in the connector. This function, if defined, will be executed passing all component properties before rendering it, and the returned object will be applied as properties to the Component.
 
 The parser function has to be defined as second argument of the connector:
 
 
 ```js
-export const mapDataSourceToProps = () => ({
+export const mapDataProviderToProps = () => ({
   books: booksCollection.read.getters.value,
   booksLoading: booksCollection.read.getters.loading,
   authorsLoading: authorsCollection.read.getters.loading
@@ -168,7 +168,7 @@ export const parseProps = props => ({
 });
 
 export const ConnectedModule = connect(
-  mapDataSourceToProps,
+  mapDataProviderToProps,
   parseProps
 )(Books);
 ```
@@ -179,35 +179,35 @@ export const ConnectedModule = connect(
 
 Methods for prefetching data on server side rendering are available too. When data is prefetched in server side, the connect function will pass the `value` property calculated on server side to the components directly. It will not modify the `loading` property until the first load on client side is finished (At first client-side load, the resource will not be considered as `loading` to maintain the server-side value in the component until it finish loading).
 
-> __It is important to define custom an unique "uuids" for your Data Provider sources when are going to be read on server side. Otherwise, the `readServerSide` method will trace a warning if detects duplicated "ids".__
+> __It is important to define custom an unique "uuids" for your Data Provider instances when are going to be read on server side. Otherwise, the `readServerSide` method will trace a warning if detects duplicated "ids".__
 
 ### Server side data methods and components
 
-* `readOnServerSide(source)`
+* `readOnServerSide(provider)`
 	* Alias - `addServerSideData`
 	* Arguments
-		* source - `<Object> or <Array> of <Objects>` Data Provider source or sources that should be read when `readServerSide` method is executed. Can be Data Provider origins or selectors of any type, queried or not.
-* `readServerSide([source])`
+		* provider - `<Object> or <Array> of <Objects>` Data Provider instance or instances that should be read when `readServerSide` method is executed. Can be Data Provider origins or selectors of any type, queried or not.
+* `readServerSide([providers])`
 	* Alias - `readServerSideData`
 	* Arguments
-		* source - `<Object> or <Array> of <Objects>` Data Provider source or sources. Will be added to be read with the `readOnServerSide` method.
+		* providers - `<Object> or <Array> of <Objects>` Data Provider instance or instances. Will be added to be read with the `readOnServerSide` method.
 	* Returns
 		* `<Object>` This method is asynchronous, and, when resolved, it returns an object containing all server side data ready to be set on the `<ServerSideData>` context component.
 * `<ServerSideData data={data} clientSide={true}><App/></ServerSideData>` Component that sets the result of the `readServerSide` method in a context to make it available from all Data Provider connected children components.
 	* Props
 		* data - `<Object>` Object containing the result of the `readServerSide` method.
-		* clientSide - `<Boolean>` If false, the connect method will not dispatch automatically the read method of the sources marked as "server-side", so, for example, api requests will not be repeated on client side, and data retrieved in server side will be always passed to connected components.
+		* clientSide - `<Boolean>` If false, the connect method will not dispatch automatically the read method of the providers marked as "server-side", so, for example, api requests will not be repeated on client side, and data retrieved in server side will be always passed to connected components.
 
-### Example of server side prefecth implementation in a Next project:
+### Example of server side prefecth implementation in a Next.js project:
 
-In the next example, the data of the "myDataSource" Data Provider source will be fetched on server side and request will not be repeated on client side. The component will be rendered directly with server side data, and no loading state will be set:
+In the next example, the data of the "myDataProvider" Data Provider instance will be fetched on server side and request will not be repeated on client side. The component will be rendered directly with server side data, and no loading state will be set:
 
 ```jsx
 // src/home.js
 import { readOnServerSide, connect } from "@data-provider/connector-react";
-import { myDataSource } from "src/data";
+import { myDataProvider } from "src/data";
 
-readOnServerSide(myDataSource); // source is marked to be read when readServerSide method is executed.
+readOnServerSide(myDataProvider); // provider is marked to be read when readServerSide method is executed.
 
 export const HomeComponent = ({data}) => {
   if(data.loading) {
@@ -216,11 +216,11 @@ export const HomeComponent = ({data}) => {
   return <div>{data.value}</div>
 };
 
-export const mapDataSourceToProps = () => ({
-  data: myDataSource.read
+export const mapDataProviderToProps = () => ({
+  data: myDataProvider.read
 });
 
-export const Home = connect(mapDataSourceToProps)(HomeComponent)
+export const Home = connect(mapDataProviderToProps)(HomeComponent)
 
 ```
 

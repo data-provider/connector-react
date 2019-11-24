@@ -11,6 +11,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 ### BREAKING CHANGES
 
+## [1.4.0] - 2019-11-24
+### Changed
+- Upgrade @data-provider/core dependency
+- Improve traces, add package name namespace.
+- Upgrade demo dependencies. Maintain demo code using methods that are going to be deprecated willfully in order to check backward compatibility.
+
+### Fixed
+- Fix devDependencies vulnerabilities
+
 ## [1.3.0] - 2019-11-23
 ### Changed
 - Project migration. __Read NOTICE__ for further info. All previous releases in this CHANGELOG file correspond to @xbyorange/react-mercury package distribution.

@@ -9,12 +9,14 @@ http://www.apache.org/licenses/LICENSE-2.0
 Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
 */
 
+import { warn } from "./utils";
+
 const serverSideData = new Set();
 
-const readSourceValue = source => {
-  return source.read().then(value => {
+const readProviderValue = provider => {
+  return provider.read().then(value => {
     return Promise.resolve({
-      id: source._id,
+      id: provider._id,
       value
     });
   });
@@ -24,8 +26,8 @@ const resultsToObject = results => {
   return Promise.resolve(
     results.reduce((allResults, result) => {
       if (allResults.hasOwnProperty(result.id)) {
-        console.warn(
-          `Duplicated Data Provider id ${result.id} detected in server-side-data. Data may not be assigned properly to correspondent sources in client-side`
+        warn(
+          `Duplicated Data Provider id ${result.id} detected in server-side-data. Data may not be assigned properly to correspondent providers in client-side`
         );
       }
       allResults[result.id] = result.value;
@@ -34,20 +36,20 @@ const resultsToObject = results => {
   );
 };
 
-export const readOnServerSide = sources => {
-  if (sources) {
-    const sourcesToAdd = Array.isArray(sources) ? sources : [sources];
-    sourcesToAdd.forEach(source => {
-      serverSideData.add(source);
+export const readOnServerSide = providers => {
+  if (providers) {
+    const providersToAdd = Array.isArray(providers) ? providers : [providers];
+    providersToAdd.forEach(provider => {
+      serverSideData.add(provider);
     });
   }
 };
 
 export const addServerSideData = readOnServerSide;
 
-export const readServerSide = sources => {
-  readOnServerSide(sources);
-  return Promise.all(Array.from(serverSideData).map(readSourceValue)).then(resultsToObject);
+export const readServerSide = providers => {
+  readOnServerSide(providers);
+  return Promise.all(Array.from(serverSideData).map(readProviderValue)).then(resultsToObject);
 };
 
 export const readServerSideData = readServerSide;
