@@ -22,7 +22,7 @@
   "files": [
     "dist"
   ],
-  "main": "dist/data-provider-connector-react.umd.js",
+  "main": "dist/data-provider-connector-react.cjs.js",
   "module": "dist/data-provider-connector-react.esm.js",
   "scripts": {
     "prelint": "rimraf demo/src/connector-react",

@@ -14,6 +14,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [1.4.0] - 2019-11-24
 ### Changed
 - Upgrade @data-provider/core dependency
+- Improve traces, add package name namespace.
+
+### Fixed
+- Fix devDependencies vulnerabilities
 
 ## [1.3.0] - 2019-11-23
 ### Changed

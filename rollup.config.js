@@ -46,6 +46,13 @@ module.exports = [
   {
     ...BASE_CONFIG,
     output: {
+      file: "dist/data-provider-connector-react.cjs.js",
+      format: "cjs"
+    }
+  },
+  {
+    ...BASE_CONFIG,
+    output: {
       file: "dist/data-provider-connector-react.umd.js",
       format: "umd",
       name: "dataProviderConnectorReact",
