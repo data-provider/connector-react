@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 - Upgrade @data-provider/core dependency
 - Improve traces, add package name namespace.
+- Upgrade demo dependencies. Maintain demo code using methods that are going to be deprecated willfully in order to check backward compatibility.
 
 ### Fixed
 - Fix devDependencies vulnerabilities
