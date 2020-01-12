@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 ### BREAKING CHANGES
 
+## [1.4.2] - 2020-01-12
+### Changed
+- Update dependencies
+
 ## [1.4.1] - 2019-11-24
 ### Fixed
 - Fix Sonar code smell
