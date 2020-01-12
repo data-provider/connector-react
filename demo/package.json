@@ -5,7 +5,7 @@
   "dependencies": {
     "@data-provider/core": "1.7.1",
     "@data-provider/axios": "1.6.1",
-    "@data-provider/browser-storage": "1.4.1",
+    "@data-provider/browser-storage": "1.4.2",
     "@data-provider/memory": "1.4.1",
     "lodash": "4.17.15",
     "prop-types": "15.7.2",
