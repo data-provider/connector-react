@@ -6,7 +6,7 @@
     "@data-provider/core": "1.7.1",
     "@data-provider/axios": "1.6.1",
     "@data-provider/browser-storage": "1.4.1",
-    "@data-provider/memory": "1.4.1",
+    "@data-provider/memory": "1.4.2",
     "lodash": "4.17.15",
     "prop-types": "15.7.2",
     "react": "16.10.2",
