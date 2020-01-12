@@ -6,6 +6,8 @@
 
 ## Overview
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/data-provider/connector-react.svg)](https://greenkeeper.io/)
+
 This package provides reactivity to [Data Provider][data-provider-url] using a React high order component. It also dispatchs automatically the read method of the Data Provider instances.
 
 Connect the desired Data Providers with your components and this library will retrieve the data and re-render your components when corresponds.
