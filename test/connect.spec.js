@@ -686,29 +686,26 @@ describe("react connect plugin", () => {
       bookUpdateLoading: books.update.getters.loading,
       booksUpdate: books.update.getters.dispatch
     });
-    const ConnectedBooks = connect(
-      mapDataSourceToProps,
-      props => {
-        return {
-          ...props,
-          books:
-            props.books && props.books.value && props.books.value.length > 0
-              ? props.books
-              : {
-                  value: [
-                    {
-                      id: 1,
-                      title: "Foo",
-                      author: "Foo author"
-                    }
-                  ],
-                  loading: false,
-                  error: null
-                },
-          bookUpdateLoading: false
-        };
-      }
-    )(BooksList);
+    const ConnectedBooks = connect(mapDataSourceToProps, props => {
+      return {
+        ...props,
+        books:
+          props.books && props.books.value && props.books.value.length > 0
+            ? props.books
+            : {
+                value: [
+                  {
+                    id: 1,
+                    title: "Foo",
+                    author: "Foo author"
+                  }
+                ],
+                loading: false,
+                error: null
+              },
+        bookUpdateLoading: false
+      };
+    })(BooksList);
 
     const wrapper = mount(<ConnectedBooks />);
     wrapper.update();

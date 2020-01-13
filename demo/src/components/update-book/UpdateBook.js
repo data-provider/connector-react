@@ -72,7 +72,7 @@ export class UpdateBook extends React.Component {
             <input
               type="text"
               value={
-                this.state.title || ((this.props.book.value && this.props.book.value.title) || "")
+                this.state.title || (this.props.book.value && this.props.book.value.title) || ""
               }
               onChange={this.handleTitleChange}
             />
@@ -84,7 +84,7 @@ export class UpdateBook extends React.Component {
             <input
               type="text"
               value={
-                this.state.year || ((this.props.book.value && this.props.book.value.year) || "")
+                this.state.year || (this.props.book.value && this.props.book.value.year) || ""
               }
               onChange={this.handleYearChange}
             />
