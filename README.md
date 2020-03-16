@@ -4,6 +4,10 @@
 
 [![NPM downloads][npm-downloads-image]][npm-downloads-url] [![License][license-image]][license-url]
 
+# DEPRECATED
+
+This module has moved and is now available at @data-provider/react. Please update your dependencies as this version is no longer maintained an may contain bugs and security issues.
+
 ## Overview
 
 This package provides reactivity to [Data Provider][data-provider-url] using a React high order component. It also dispatchs automatically the read method of the Data Provider instances.
