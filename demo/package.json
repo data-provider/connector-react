@@ -3,24 +3,24 @@
   "version": "1.0.0",
   "private": true,
   "dependencies": {
-    "@data-provider/core": "1.7.1",
+    "@data-provider/core": "1.8.0",
     "@data-provider/axios": "1.6.1",
-    "@data-provider/browser-storage": "1.4.1",
-    "@data-provider/memory": "1.4.1",
+    "@data-provider/browser-storage": "1.4.2",
+    "@data-provider/memory": "1.4.2",
     "lodash": "4.17.15",
     "prop-types": "15.7.2",
-    "react": "16.10.2",
-    "react-dom": "16.10.2",
+    "react": "16.12.0",
+    "react-dom": "16.12.0",
     "react-router-dom": "5.1.2",
-    "redux": "4.0.4"
+    "redux": "4.0.5"
   },
   "devDependencies": {
-    "@mocks-server/main": "1.8.1",
+    "@mocks-server/main": "1.8.2",
     "babel-loader": "8.0.6",
     "babel-plugin-module-resolver": "4.0.0",
     "ncp": "2.0.0",
-    "react-app-rewired": "2.1.3",
-    "react-scripts": "3.3.0"
+    "react-app-rewired": "2.1.5",
+    "react-scripts": "3.4.0"
   },
   "scripts": {
     "prestart": "ncp ../dist src/connector-react",
